@@ -11,12 +11,10 @@
 
 <?php
 require 'config.php';
+require 'dao/UsuarioDAOMySQL.php';
 
-$lista = [];
-$sql = $pdo->query("SELECT * FROM usuarios");
-if($sql->rowCount() > 0) {
-    $lista = $sql->fetchAll(PDO::FETCH_ASSOC);
-}
+$usuarioDao = new UsuarioDAOMysql($pdo);
+$lista = $usuarioDao->findAll();
 ?>
 
 <div class="container">
@@ -34,12 +32,12 @@ if($sql->rowCount() > 0) {
         <tbody>
             <?php foreach($lista as $usuario):?>
                 <tr>
-                    <td><?=$usuario['id'];?></td>
-                    <td><?=$usuario['nome'];?></td>
-                    <td><?=$usuario['email'];?></td>
+                    <td><?=$usuario->getID();?></td>
+                    <td><?=$usuario->getNome();?></td>
+                    <td><?=$usuario->getEmail();;?></td>
                     <td>
-                        <a href="editar.php?id=<?=$usuario['id'];?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="excluir.php?id=<?=$usuario['id'];?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+                        <a href="editar.php?id=<?=$usuario->getID();?>" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="excluir.php?id=<?=$usuario->getID();?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
                     </td>
                 </tr>
             <?php endforeach;?>
